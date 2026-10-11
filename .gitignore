@@ -31,3 +31,7 @@ htmlcov/
 # Operating System
 .DS_Store
 Thumbs.db
+
+# Documentation and homework notes (local only)
+lesson_*.md
+nazariy_*.md

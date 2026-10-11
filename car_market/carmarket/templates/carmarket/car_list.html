@@ -1,60 +1,78 @@
 {% load static %}
-  
-<link rel="stylesheet" href="{% static 'css/style.css' %}">
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <title>AutoMarket — Avtomobillar bozori</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
 
-<div class="profile-card">
+<nav class="navbar">
+    <a href="{% url 'car_list_fbv' %}" class="nav-brand">🚗 AutoMarket</a>
+    <div class="nav-links">
+        <a href="{% url 'car_create' %}" class="btn btn-primary">+ Yangi avtomobil</a>
+        {% if user.is_authenticated %}
+            <span>Xush kelibsiz, <strong>{{ user.username }}</strong></span>
+            <form action="{% url 'logout' %}" method="POST" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-outline" style="color:white; border-color:#475569;">Chiqish</button>
+            </form>
+        {% else %}
+            <a href="{% url 'login' %}" class="btn btn-outline" style="color:white; border-color:#475569;">Kirish</a>
+            <a href="{% url 'register' %}" class="btn btn-success">Ro'yxatdan o'tish</a>
+        {% endif %}
+    </div>
+</nav>
 
-    <img src="{% static 'images/suit.jpg' %}" alt="JDU Logo" class="jdu-logo">
-    
-    <br><br>
-    <img src="{% static 'images/watches2.jpg' %}" alt="Mening suratim" class="my-photo">
-    <h3>Rasm</h3>
+<div class="container">
+    <div class="profile-card">
+        <img src="{% static 'images/suit.jpg' %}" alt="JDU Logo" class="jdu-logo">
+        <br><br>
+        <img src="{% static 'images/watches2.jpg' %}" alt="Mening suratim" class="my-photo">
+        <h3>Talaba profili: Elyorbek</h3>
+        <div class="video-box">
+            <p><strong>Tanishtiruv videosi:</strong></p>
+            <video width="320" height="240" controls>
+                <source src="{% static 'videos/video.webm' %}" type="video/webm">
+                Brauzeringiz videoni qo'llab-quvvatlamaydi.
+            </video>
+        </div>
+    </div>
 
-    <div class="video-box">
-        <p><strong>Tanishtiruv videosi:</strong></p>
-        <video width="320" height="240" controls>
-            <source src="{% static 'videos/video.webm' %}" type="video/webm">
-            Brauzeringiz videoni qo'llab-quvvatlamaydi.
-        </video>
+    <h2 style="margin-top: 24px; color: #0f172a;">Sotuvdagi avtomobillar</h2>
+
+    <div class="car-grid">
+        {% for car in cars %}
+        <div class="car-card">
+            {% if car.image %}
+                <img src="{{ car.image.url }}" alt="{{ car.brand }} {{ car.model }}" class="car-card-img">
+            {% else %}
+                <div class="car-card-img" style="display:flex; align-items:center; justify-content:center; color:#94a3b8;">
+                    Rasm yuklanmagan
+                </div>
+            {% endif %}
+            <div class="car-card-body">
+                <div class="car-title">{{ car.brand }} {{ car.model }}</div>
+                <div class="car-price">${{ car.price }}</div>
+                <div class="car-meta">
+                    {% if car.category %}Toifasi: {{ car.category.name }} | {% endif %}
+                    {% if car.year %}Yili: {{ car.year }}{% endif %}
+                </div>
+                <div style="margin-top: auto; display: flex; gap: 8px;">
+                    <a href="{% url 'car_detail' car.id %}" class="btn btn-primary" style="flex:1;">Batafsil</a>
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'car_update' car.id %}" class="btn btn-outline">✏</a>
+                        <a href="{% url 'car_delete' car.id %}" class="btn btn-danger">🗑</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        {% empty %}
+            <p style="color: #64748b;">Hozircha mashinalar mavjud emas.</p>
+        {% endfor %}
     </div>
 </div>
 
-
-{% for car in cars %}
-<ol>
-    {% if car.image %}
-        <li>
-            <img src="{{ car.image.url }}" alt="{{ car.brand }} {{ car.model }}" style="width: 200px; height: auto; border-radius: 8px;">
-        </li>
-    {% else %}
-        <li><em>(Rasm yuklanmagan)</em></li>
-    {% endif %}
-    <li>{{ car.brand }}</li>
-    <li>{{ car.model }}</li>
-    <li>Kategoriya: {{ car.category.name }}</li>
-    <li>{{ car.price }}</li>
-    <li>{{ car.year }}</li>
-    <li>{{ car.id }}</li>
-    <li>
-        <a href="{% url 'car_detail' car.id %}">Batafsil ko'rish</a>
-    </li>
-</ol>
-{% endfor %}
-
-
-<div style="background: #eee; padding: 10px; margin-bottom: 15px;">
-    {% if user.is_authenticated %}
-        <span>Xush kelibsiz, <strong>{{ user.username }}</strong>!</span> |
-        
-        <!-- Django 5 da Logout POST so'rovi orqali xavfsiz qilinadi -->
-        <form action="{% url 'logout' %}" method="POST" style="display:inline;">
-            {% csrf_token %}
-            <button type="submit">Chiqish (Logout)</button>
-        </form>
-    {% else %}
-        <a href="{% url 'login' %}">Kirish</a> | 
-        <a href="{% url 'register' %}">Ro'yxatdan o'tish</a>
-        
-    {% endif %}
-    <a href="{% url 'car_create' %}">Yangi avtomobil qo'shish</a>
-</div>
+</body>
+</html>

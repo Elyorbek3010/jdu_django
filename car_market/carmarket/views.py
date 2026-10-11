@@ -48,6 +48,28 @@ def car_create(request):
     return render(request, 'carmarket/car_form.html', context)
 
 
+@login_required
+def car_update(request, id):
+    car = get_object_or_404(Car, id=id)
+    if request.method == 'POST':
+        form = CarForm(request.POST, request.FILES, instance=car)
+        if form.is_valid():
+            form.save()
+            return redirect('car_detail', id=car.id)
+    else:
+        form = CarForm(instance=car)
+    return render(request, 'carmarket/car_form.html', {'form': form, 'car': car, 'is_edit': True})
+
+
+@login_required
+def car_delete(request, id):
+    car = get_object_or_404(Car, id=id)
+    if request.method == 'POST':
+        car.delete()
+        return redirect('car_list_fbv')
+    return render(request, 'carmarket/car_confirm_delete.html', {'car': car})
+
+
 def register(request):
     if request.method == 'POST':
         form = UserCreationForm(request.POST)

@@ -1,19 +1,48 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="uz">
 <head>
     <meta charset="UTF-8">
     <title>{{ car.brand }} {{ car.model }} — Batafsil</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
-    <h1>{{ car.brand }} {{ car.model }}</h1>
-    <p><strong>ID raqami:</strong> {{ car.id }}</p>
-    <p><strong>Markasi:</strong> {{ car.brand }}</p>
-    <p><strong>Modeli:</strong> {{ car.model }}</p>
-    <p><strong>Ishlab chiqarilgan yili:</strong> {{ car.year }}-yil</p>
-    <p><strong>Narxi:</strong> ${{ car.price }}</p>
 
-    <hr>
-    
-    <a href="{% url 'car_list_fbv' %}">Mashinalar ro'yxatiga qaytish</a>
+<nav class="navbar">
+    <a href="{% url 'car_list_fbv' %}" class="nav-brand">🚗 AutoMarket</a>
+    <div class="nav-links">
+        <a href="{% url 'car_list_fbv' %}" class="btn btn-outline" style="color:white; border-color:#475569;">⬅ Barcha mashinalar</a>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="form-card" style="max-width: 650px;">
+        {% if car.image %}
+            <img src="{{ car.image.url }}" alt="{{ car.brand }} {{ car.model }}" style="width: 100%; max-height: 320px; object-fit: cover; border-radius: 8px; margin-bottom: 16px;">
+        {% endif %}
+
+        <h1 style="color: #0f172a; margin-bottom: 12px;">{{ car.brand }} {{ car.model }}</h1>
+        <div class="car-price" style="font-size: 26px; margin-bottom: 16px;">${{ car.price }}</div>
+
+        <div style="background: #f1f5f9; padding: 14px; border-radius: 8px; margin-bottom: 20px;">
+            <p style="margin-bottom: 6px;"><strong>ID raqami:</strong> {{ car.id }}</p>
+            <p style="margin-bottom: 6px;"><strong>Markasi:</strong> {{ car.brand }}</p>
+            <p style="margin-bottom: 6px;"><strong>Modeli:</strong> {{ car.model }}</p>
+            <p style="margin-bottom: 6px;"><strong>Ishlab chiqarilgan yili:</strong> {{ car.year|default:"Ko'rsatilmagan" }}</p>
+            {% if car.category %}
+                <p><strong>Toifasi:</strong> {{ car.category.name }}</p>
+            {% endif %}
+        </div>
+
+        <div style="display: flex; gap: 10px;">
+            {% if user.is_authenticated %}
+                <a href="{% url 'car_update' car.id %}" class="btn btn-primary">✏ Tahrirlash</a>
+                <a href="{% url 'car_delete' car.id %}" class="btn btn-danger">🗑 O'chirish</a>
+            {% endif %}
+            <a href="{% url 'car_list_fbv' %}" class="btn btn-outline">⬅ Orqaga</a>
+        </div>
+    </div>
+</div>
+
 </body>
 </html>

@@ -1,17 +1,33 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="uz">
 <head>
     <meta charset="UTF-8">
-    <title>Tizimga kirish</title>
+    <title>Tizimga kirish — AutoMarket</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
-    <h2>Tizimga kirish (Login)</h2>
-    <form method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Kirish</button>
-    </form>
-    <br>
-    <p>Akkauntingiz yo'qmi? <a href="{% url 'register' %}">Ro'yxatdan o'tish</a></p>
+
+<nav class="navbar">
+    <a href="{% url 'car_list_fbv' %}" class="nav-brand">🚗 AutoMarket</a>
+    <div class="nav-links">
+        <a href="{% url 'register' %}" class="btn btn-success">Ro'yxatdan o'tish</a>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="form-card">
+        <h2 style="color: #0f172a; margin-bottom: 20px;">🔑 Tizimga kirish</h2>
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 10px;">Kirish</button>
+        </form>
+        <p style="margin-top: 16px; font-size: 14px; color: #64748b; text-align: center;">
+            Akkauntingiz yo'qmi? <a href="{% url 'register' %}" style="color: #0284c7; text-decoration: none;">Ro'yxatdan o'tish</a>
+        </p>
+    </div>
+</div>
+
 </body>
 </html>

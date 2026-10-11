@@ -1,21 +1,38 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="uz">
 <head>
     <meta charset="UTF-8">
-    <title>Yangi avtomobil qo'shish</title>
+    <title>{% if is_edit %}Avtomobilni tahrirlash{% else %}Yangi avtomobil qo'shish{% endif %}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
-    <h1>Yangi avtomobil qo'shish</h1>
 
-    <form method="POST" enctype="multipart/form-data">
-        {% csrf_token %}  
-        
-        {{ form.as_p }}   
+<nav class="navbar">
+    <a href="{% url 'car_list_fbv' %}" class="nav-brand">🚗 AutoMarket</a>
+    <div class="nav-links">
+        <a href="{% url 'car_list_fbv' %}" class="btn btn-outline" style="color:white; border-color:#475569;">⬅ Barcha mashinalar</a>
+    </div>
+</nav>
 
-        <button type="submit">Saqlash</button>
-    </form>
+<div class="container">
+    <div class="form-card">
+        <h2 style="color: #0f172a; margin-bottom: 20px;">
+            {% if is_edit %}✏ Avtomobilni tahrirlash ({{ car.brand }} {{ car.model }}){% else %}➕ Yangi avtomobil qo'shish{% endif %}
+        </h2>
 
-    <br>
-    <a href="{% url 'car_list_fbv' %}">⬅ Bekor qilish va ro'yxatga qaytish</a>
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <div style="margin-top: 20px; display: flex; gap: 10px;">
+                <button type="submit" class="btn btn-primary">
+                    {% if is_edit %}O'zgarishlarni saqlash{% else %}Saqlash{% endif %}
+                </button>
+                <a href="{% url 'car_list_fbv' %}" class="btn btn-outline">Bekor qilish</a>
+            </div>
+        </form>
+    </div>
+</div>
+
 </body>
 </html>

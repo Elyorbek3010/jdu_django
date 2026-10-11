@@ -1,17 +1,33 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="uz">
 <head>
     <meta charset="UTF-8">
-    <title>Ro'yxatdan o'tish</title>
+    <title>Ro'yxatdan o'tish — AutoMarket</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
 </head>
 <body>
-    <h2>Ro'yxatdan o'tish</h2>
-    <form method="POST">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Ro'yxatdan o'tish</button>
-    </form>
-    <br>
-    <p>Akkauntingiz bormi? <a href="{% url 'login' %}">Kirish (Login)</a></p>
+
+<nav class="navbar">
+    <a href="{% url 'car_list_fbv' %}" class="nav-brand">🚗 AutoMarket</a>
+    <div class="nav-links">
+        <a href="{% url 'login' %}" class="btn btn-outline" style="color:white; border-color:#475569;">Kirish</a>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="form-card">
+        <h2 style="color: #0f172a; margin-bottom: 20px;">📝 Ro'yxatdan o'tish</h2>
+        <form method="POST">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="btn btn-success" style="width: 100%; margin-top: 10px;">Ro'yxatdan o'tish</button>
+        </form>
+        <p style="margin-top: 16px; font-size: 14px; color: #64748b; text-align: center;">
+            Akkauntingiz bormi? <a href="{% url 'login' %}" style="color: #0284c7; text-decoration: none;">Kirish</a>
+        </p>
+    </div>
+</div>
+
 </body>
 </html>

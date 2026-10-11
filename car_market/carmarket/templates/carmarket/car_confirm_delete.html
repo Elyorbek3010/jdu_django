@@ -1,0 +1,36 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <title>Avtomobilni o'chirishni tasdiqlash</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+<nav class="navbar">
+    <a href="{% url 'car_list_fbv' %}" class="nav-brand">🚗 AutoMarket</a>
+    <div class="nav-links">
+        <a href="{% url 'car_list_fbv' %}" class="btn btn-outline" style="color:white; border-color:#475569;">⬅ Barcha mashinalar</a>
+    </div>
+</nav>
+
+<div class="container">
+    <div class="form-card" style="border-top: 4px solid #dc2626;">
+        <h2 style="color: #dc2626; margin-bottom: 16px;">⚠ Avtomobilni o'chirish</h2>
+        <p style="font-size: 16px; margin-bottom: 24px; color: #334155;">
+            Haqiqatan ham <strong>{{ car.brand }} {{ car.model }} (ID: {{ car.id }})</strong> avtomobilini o'chirib tashlamoqchimisiz?
+        </p>
+
+        <form method="POST">
+            {% csrf_token %}
+            <div style="display: flex; gap: 10px;">
+                <button type="submit" class="btn btn-danger">Ha, o'chirilsin</button>
+                <a href="{% url 'car_detail' car.id %}" class="btn btn-outline">Bekor qilish</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+</body>
+</html>

@@ -5,6 +5,8 @@ from .views import (
     CarListView,
     get_car_detail,
     car_create,
+    car_update,
+    car_delete,
     register,
     CarViewSet,
 )
@@ -18,8 +20,10 @@ urlpatterns = [
     path('cars/fbv/', car_list_fbv, name='car_list_fbv'),
     path('cars/cbv/', CarListView.as_view(), name='car_list_cbv'),
 
-    path('cars/<int:id>', get_car_detail, name='car_detail'),
+    path('cars/<int:id>/', get_car_detail, name='car_detail'),
     path('cars/add/', car_create, name='car_create'),
+    path('cars/<int:id>/edit/', car_update, name='car_update'),
+    path('cars/<int:id>/delete/', car_delete, name='car_delete'),
 
     path('register/', register, name='register'),
     path('login/', LoginView.as_view(template_name='carmarket/login.html'), name='login'),
