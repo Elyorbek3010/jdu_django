@@ -25,6 +25,5 @@ urlpatterns = [
     path('login/', LoginView.as_view(template_name='carmarket/login.html'), name='login'),
     path('logout/', LogoutView.as_view(template_name='carmarket/logout.html'), name='logout'),
 
-    # API endpoints
     path('api/', include(router.urls)),
 ]
