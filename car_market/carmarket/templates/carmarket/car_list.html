@@ -1,0 +1,60 @@
+{% load static %}
+  
+<link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+<div class="profile-card">
+
+    <img src="{% static 'images/suit.jpg' %}" alt="JDU Logo" class="jdu-logo">
+    
+    <br><br>
+    <img src="{% static 'images/watches2.jpg' %}" alt="Mening suratim" class="my-photo">
+    <h3>Rasm</h3>
+
+    <div class="video-box">
+        <p><strong>Tanishtiruv videosi:</strong></p>
+        <video width="320" height="240" controls>
+            <source src="{% static 'videos/video.webm' %}" type="video/webm">
+            Brauzeringiz videoni qo'llab-quvvatlamaydi.
+        </video>
+    </div>
+</div>
+
+
+{% for car in cars %}
+<ol>
+    {% if car.image %}
+        <li>
+            <img src="{{ car.image.url }}" alt="{{ car.brand }} {{ car.model }}" style="width: 200px; height: auto; border-radius: 8px;">
+        </li>
+    {% else %}
+        <li><em>(Rasm yuklanmagan)</em></li>
+    {% endif %}
+    <li>{{ car.brand }}</li>
+    <li>{{ car.model }}</li>
+    <li>Kategoriya: {{ car.category.name }}</li>
+    <li>{{ car.price }}</li>
+    <li>{{ car.year }}</li>
+    <li>{{ car.id }}</li>
+    <li>
+        <a href="{% url 'car_detail' car.id %}">Batafsil ko'rish</a>
+    </li>
+</ol>
+{% endfor %}
+
+
+<div style="background: #eee; padding: 10px; margin-bottom: 15px;">
+    {% if user.is_authenticated %}
+        <span>Xush kelibsiz, <strong>{{ user.username }}</strong>!</span> |
+        
+        <!-- Django 5 da Logout POST so'rovi orqali xavfsiz qilinadi -->
+        <form action="{% url 'logout' %}" method="POST" style="display:inline;">
+            {% csrf_token %}
+            <button type="submit">Chiqish (Logout)</button>
+        </form>
+    {% else %}
+        <a href="{% url 'login' %}">Kirish</a> | 
+        <a href="{% url 'register' %}">Ro'yxatdan o'tish</a>
+        
+    {% endif %}
+    <a href="{% url 'car_create' %}">Yangi avtomobil qo'shish</a>
+</div>

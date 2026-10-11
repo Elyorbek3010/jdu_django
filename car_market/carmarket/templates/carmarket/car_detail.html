@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="uz">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ car.brand }} {{ car.model }} — Batafsil</title>
+</head>
+<body>
+    <h1>{{ car.brand }} {{ car.model }}</h1>
+    <p><strong>ID raqami:</strong> {{ car.id }}</p>
+    <p><strong>Markasi:</strong> {{ car.brand }}</p>
+    <p><strong>Modeli:</strong> {{ car.model }}</p>
+    <p><strong>Ishlab chiqarilgan yili:</strong> {{ car.year }}-yil</p>
+    <p><strong>Narxi:</strong> ${{ car.price }}</p>
+
+    <hr>
+    
+    <a href="{% url 'car_list_fbv' %}">Mashinalar ro'yxatiga qaytish</a>
+</body>
+</html>
